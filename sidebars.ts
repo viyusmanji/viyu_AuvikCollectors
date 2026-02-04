@@ -57,6 +57,7 @@ const sidebars: SidebarsConfig = {
         'golden-image/image-contents',
         'golden-image/per-client-customization',
         'golden-image/cloning-process',
+        'golden-image/update-procedures',
         'golden-image/version-history',
       ],
     },
