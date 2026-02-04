@@ -20,6 +20,7 @@ import ContentVisibility from '@theme/ContentVisibility';
 import RelatedPages from '@site/src/components/RelatedPages';
 import PageSuggestions from '@site/src/components/PageSuggestions';
 import usePageView from '@site/src/components/Analytics/usePageView';
+import useSearchTracking from '@site/src/components/Analytics/useSearchTracking';
 import type {Props} from '@theme/DocItem/Layout';
 import styles from './styles.module.css';
 
@@ -49,6 +50,9 @@ export default function DocItemLayout({children}: Props): React.ReactElement {
 
   // Track page views for analytics
   usePageView();
+
+  // Track search queries for analytics
+  useSearchTracking();
 
   return (
     <div className="row">
