@@ -1208,6 +1208,231 @@ Deploy independent collectors at each location:
 
 ---
 
+## Troubleshooting
+
+### Devices discovered in one VLAN but not others
+
+**Cause:** Inter-VLAN routing or firewall rules blocking SNMP traffic
+
+**Resolution:**
+1. Verify the collector can ping devices in the missing VLAN:
+   ```bash
+   ping 10.10.20.5  # Replace with device IP from missing VLAN
+   ```
+2. Test SNMP access manually:
+   ```bash
+   snmpwalk -v2c -c viyu-readonly 10.10.20.5 sysDescr
+   ```
+3. Check firewall rules allow UDP 161 and ICMP from collector to all VLANs
+4. Verify rule order — deny rules may precede allow rules
+5. Use tcpdump to see if packets are being sent:
+   ```bash
+   sudo tcpdump -i eth0 host 10.10.20.5 and port 161
+   ```
+6. Check firewall logs for blocked traffic
+
+### High latency or timeouts to remote sites
+
+**Cause:** WAN congestion, routing issues, or unstable connectivity
+
+**Resolution:**
+1. Test WAN latency from collector to remote site:
+   ```bash
+   ping -c 100 10.20.0.1  # Remote site gateway
+   # Look for packet loss and average latency
+   ```
+2. Run traceroute to identify where delays occur:
+   ```bash
+   traceroute 10.20.0.1
+   ```
+3. If latency consistently >100ms or packet loss >5%, consider distributed collectors
+4. Check WAN bandwidth utilization — SNMP polling is minimal but sustained
+5. Verify QoS policies aren't deprioritizing SNMP traffic
+6. Consider deploying a local collector at the remote site
+
+### Collector cannot reach DMZ devices despite firewall rules
+
+**Cause 1:** Firewall rule order incorrect
+
+**Resolution:**
+1. Verify allow rule is above deny rules in firewall policy
+2. Check rule hit counts — if rule has 0 hits, traffic not matching
+3. Temporarily enable logging on deny rules to see what's being blocked
+4. Review source/destination addresses — ensure exact match
+
+**Cause 2:** Asymmetric routing or return path filtering
+
+**Resolution:**
+1. Verify return packets can reach collector:
+   ```bash
+   sudo tcpdump -i eth0 host 172.16.1.10
+   ```
+2. Check if return path uses different firewall interface
+3. Verify NAT rules aren't interfering
+4. Disable reverse path filtering temporarily for testing:
+   ```bash
+   # Temporarily disable RPF (test only)
+   sudo sysctl -w net.ipv4.conf.all.rp_filter=0
+   ```
+
+**Cause 3:** DMZ devices have SNMP ACLs restricting source IPs
+
+**Resolution:**
+1. Check device SNMP configuration for allowed hosts
+2. Add collector IP to device SNMP ACL:
+   ```
+   # Cisco IOS example
+   access-list 10 permit 10.10.10.50
+   snmp-server community viyu-readonly RO 10
+   ```
+
+### SNMPv3 works on some devices but not others
+
+**Cause:** Vendor-specific SNMPv3 implementation differences
+
+**Resolution:**
+1. Check exact auth/priv protocol names — some vendors use "SHA" vs "SHA1", "AES" vs "AES128"
+2. For Cisco devices, verify the group and view are configured:
+   ```
+   show snmp user
+   show snmp group
+   ```
+3. For devices with no response, verify SNMPv3 is enabled (some require explicit enable)
+4. Check VACM (View-based Access Control Model) permissions:
+   ```
+   # Ensure read-view grants access to full MIB tree
+   snmp-server view READONLY-VIEW iso included
+   ```
+5. Test with verbose snmpwalk to see exact error:
+   ```bash
+   snmpwalk -v3 -l authPriv -u viyumonitor \
+     -a SHA -A AuthPass123! \
+     -x AES -X PrivPass456! \
+     -Le -d 10.10.10.1 sysDescr 2>&1 | head -50
+   ```
+
+### Trunk port configuration causing VLAN issues
+
+**Cause:** Native VLAN mismatch, incorrect allowed VLANs, or switchport mode wrong
+
+**Resolution:**
+1. Verify trunk port configuration on both ends (switch and router):
+   ```
+   # Cisco IOS
+   show interface GigabitEthernet0/1 switchport
+   show interface GigabitEthernet0/1 trunk
+   ```
+2. Ensure both ends have matching:
+   - Native VLAN
+   - Allowed VLANs
+   - Encapsulation type (dot1q)
+3. Check for VLAN pruning — ensure required VLANs not pruned
+4. Verify STP isn't blocking the trunk port:
+   ```
+   show spanning-tree interface GigabitEthernet0/1
+   ```
+5. For UniFi, verify trunk profile includes all needed VLANs
+
+### Collector shows online but not discovering devices
+
+**Cause 1:** Discovery not initiated or limited to wrong subnet
+
+**Resolution:**
+1. In Auvik, navigate to the site and click "Discover"
+2. Verify discovery subnets include all target networks
+3. Check that credentials are added to the site (not just client level)
+4. Review Auvik logs for credential failures
+
+**Cause 2:** SNMP credentials incorrect or not applied
+
+**Resolution:**
+1. Verify credentials in Auvik match device configuration exactly
+2. Test credentials manually from collector:
+   ```bash
+   snmpwalk -v2c -c viyu-readonly 10.10.10.1 sysDescr
+   ```
+3. Check for trailing spaces in Auvik credential entry
+4. Ensure credentials are assigned to correct scope (site vs client)
+5. Re-run discovery after fixing credentials
+
+**Cause 3:** Firewall or ACL blocking SNMP from collector
+
+**Resolution:**
+1. Verify firewall rules allow UDP 161 from collector IP
+2. Check device-level SNMP ACLs permit collector IP
+3. Test with tcpdump to confirm packets are leaving collector:
+   ```bash
+   sudo tcpdump -i eth0 port 161 -n
+   ```
+4. Review firewall logs for blocked traffic
+
+### WMI discovery failing for Windows servers
+
+**Cause:** Windows Firewall blocking WMI or credentials insufficient
+
+**Resolution:**
+1. Verify Windows Firewall allows WMI from collector IP
+2. Ensure WMI credentials have administrator privileges
+3. Test WMI access from collector (requires wmi client):
+   ```bash
+   wmic -U DOMAIN\\username%password //10.10.20.5 "SELECT * FROM Win32_ComputerSystem"
+   ```
+4. Check that Remote Registry and WMI services are running on target server
+5. Verify domain credentials (if domain-joined) or local admin account
+
+### Multi-site setup showing incorrect device locations
+
+**Cause:** Devices discovered by wrong collector or site mapping incorrect
+
+**Resolution:**
+1. If using multiple collectors, verify each discovers only its local subnet
+2. In Auvik, check site assignments for misplaced devices
+3. Manually reassign devices to correct site if needed
+4. Use site-specific credentials to prevent cross-site discovery
+5. Configure discovery ranges explicitly per site to avoid overlap
+
+### Router-on-a-stick inter-VLAN routing not working
+
+**Cause:** Subinterfaces not configured correctly or VLAN tagging issues
+
+**Resolution:**
+1. Verify router has subinterface for each VLAN:
+   ```
+   # pfSense: Check Interfaces → Assignments → VLANs
+   # Cisco: show ip interface brief | grep Dot
+   ```
+2. Ensure each subinterface has correct VLAN tag and IP
+3. Verify switch trunk port includes all VLANs:
+   ```
+   show interface trunk
+   ```
+4. Test routing from collector:
+   ```bash
+   ping 10.10.10.1  # Management VLAN gateway
+   ping 10.10.20.1  # Server VLAN gateway
+   traceroute 10.10.20.5  # Should show single hop via gateway
+   ```
+5. Check router firewall rules allow inter-VLAN traffic
+
+### SNMP working manually but failing in Auvik
+
+**Cause:** Credential entry mismatch or Auvik-specific configuration issue
+
+**Resolution:**
+1. Re-enter credentials in Auvik, ensuring:
+   - No trailing spaces
+   - Exact case match (especially for SNMPv3)
+   - Correct protocol selection (v2c vs v3)
+2. Delete and re-add the credential rather than editing
+3. Test with a single device first before applying to all
+4. Check Auvik device logs for specific error messages
+5. Verify collector time is synchronized (SNMPv3 time-sensitive):
+   ```bash
+   timedatectl status
+   ```
+
+---
+
 ## Quick Reference: Complex Scenario Checklist
 
 Before deployment, verify:
