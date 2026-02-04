@@ -1112,11 +1112,32 @@ Client has multiple locations connected via MPLS or site-to-site VPN. Decide whe
 Ensure routing and firewall rules allow HQ collector to reach remote sites:
 
 ```
-Site A: 10.10.0.0/16 (HQ)
-Site B: 10.20.0.0/16 (Remote 1)
-Site C: 10.30.0.0/16 (Remote 2)
-
-Collector: 10.10.10.50 (HQ Management VLAN)
+                         Internet
+                            │
+        ┌───────────────────┼───────────────────┐
+        │                   │                   │
+        │               MPLS/VPN                │
+        │                   │                   │
+┌───────▼────────┐  ┌───────▼────────┐  ┌──────▼─────────┐
+│   Site A (HQ)  │  │  Site B (Rmt1) │  │  Site C (Rmt2) │
+│  10.10.0.0/16  │  │  10.20.0.0/16  │  │  10.30.0.0/16  │
+│                │  │                │  │                │
+│ Management VLAN│  │ Management VLAN│  │ Management VLAN│
+│ 10.10.10.0/24  │  │ 10.20.10.0/24  │  │ 10.30.10.0/24  │
+│                │  │                │  │                │
+│ [Pi Collector] │  │  [Core Switch] │  │  [Core Switch] │
+│  10.10.10.50   │  │   10.20.10.1   │  │   10.30.10.1   │
+│       │        │  │       │        │  │       │        │
+│ [Core Switch]  │  │  [Edge Router] │  │  [Edge Router] │
+│  10.10.10.1    │  │   10.20.0.1    │  │   10.30.0.1    │
+│       │        │  │                │  │                │
+│ [Edge Router]  │  │  [Switches]    │  │  [Switches]    │
+│  10.10.0.1     │  │  [Servers]     │  │  [Servers]     │
+│       │        │  │  [APs]         │  │  [APs]         │
+└───────┼────────┘  └────────────────┘  └────────────────┘
+        │
+        └──────────► Single collector monitors all sites
+                     via WAN routing
 ```
 
 **Firewall Rules (from HQ to Remote Sites):**
@@ -1140,6 +1161,42 @@ snmpwalk -v2c -c viyu-readonly 10.20.1.1 sysDescr
 ```
 
 ### Configuration: Distributed Collectors
+
+Deploy independent collectors at each location:
+
+```
+                           Internet
+                              │
+                      Auvik Cloud API
+                         ↑    ↑    ↑
+                         │    │    │
+        ┌────────────────┘    │    └────────────────┐
+        │                     │                     │
+        │                 MPLS/VPN                  │
+        │              (Minimal Usage)              │
+        │                     │                     │
+┌───────▼────────┐    ┌───────▼────────┐    ┌──────▼─────────┐
+│   Site A (HQ)  │    │  Site B (Rmt1) │    │  Site C (Rmt2) │
+│  10.10.0.0/16  │    │  10.20.0.0/16  │    │  10.30.0.0/16  │
+│                │    │                │    │                │
+│ [Pi Collector] │    │ [Pi Collector] │    │ [Pi Collector] │
+│  10.10.10.50   │    │  10.20.10.50   │    │  10.30.10.50   │
+│       │        │    │       │        │    │       │        │
+│       ▼        │    │       ▼        │    │       ▼        │
+│  Local devices │    │  Local devices │    │  Local devices │
+│  only (L2/L3)  │    │  only (L2/L3)  │    │  only (L2/L3)  │
+│                │    │                │    │                │
+│ [Switches]     │    │ [Switches]     │    │ [Switches]     │
+│ [Servers]      │    │ [Servers]      │    │ [Servers]      │
+│ [APs]          │    │ [APs]          │    │ [APs]          │
+│ [Firewall]     │    │ [Firewall]     │    │ [Firewall]     │
+└────────────────┘    └────────────────┘    └────────────────┘
+
+  Auvik Site:           Auvik Site:          Auvik Site:
+  ClientName-HQ         ClientName-SiteB     ClientName-SiteC
+```
+
+**Setup Steps:**
 
 1. Deploy a Pi at each site
 2. Place each on the local management VLAN
