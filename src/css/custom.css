@@ -229,3 +229,30 @@ th, td {
     padding: 0.5rem 0.75rem;
   }
 }
+
+/* Prevent horizontal overflow on mobile */
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .main-wrapper {
+    overflow-x: hidden;
+  }
+
+  article {
+    overflow-x: hidden;
+  }
+
+  /* Ensure code blocks don't cause horizontal scroll */
+  pre {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  /* Ensure tables are scrollable on mobile */
+  .table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
