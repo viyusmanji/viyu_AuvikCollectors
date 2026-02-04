@@ -38,6 +38,7 @@ const sidebars: SidebarsConfig = {
         'network/vlan-placement',
         'network/firewall-rules',
         'network/snmp-configuration',
+        'network/complex-scenarios',
       ],
     },
     {
@@ -58,6 +59,18 @@ const sidebars: SidebarsConfig = {
         'golden-image/cloning-process',
         'golden-image/update-procedures',
         'golden-image/version-history',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Multi-Site Deployment',
+      items: [
+        'multi-site/overview',
+        'multi-site/bulk-preparation',
+        'multi-site/naming-conventions',
+        'multi-site/fleet-management',
+        'multi-site/batch-customization',
+        'multi-site/alert-configuration',
       ],
     },
     {

@@ -127,9 +127,9 @@ All components from [image-contents.md](/docs/golden-image/image-contents) docum
 
 Use this template when releasing new major or minor versions:
 
-### Migrating from v`{OLD}` to v`{NEW}`
+### Migrating from v\{OLD\} to v\{NEW\}
 
-**Breaking Changes:** `{List any breaking changes or None}`
+**Breaking Changes:** \{List any breaking changes or None\}
 
 **Pre-Migration Checklist:**
 - [ ] Back up existing configuration
@@ -168,7 +168,7 @@ Use this template when releasing new major or minor versions:
 - [ ] SSH access working
 - [ ] Automatic updates functioning
 
-**Estimated Downtime:** `{X minutes per site}`
+**Estimated Downtime:** \{X minutes per site\}
 
 **Rollback Plan:** Flash previous image version if critical issues occur
 

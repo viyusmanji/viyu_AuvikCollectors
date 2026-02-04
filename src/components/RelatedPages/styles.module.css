@@ -1,0 +1,146 @@
+/**
+ * RelatedPages component styles
+ * Supports light/dark modes and responsive design
+ */
+
+.relatedPages {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.header {
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--ifm-color-primary);
+}
+
+.title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--ifm-color-primary);
+}
+
+.categories {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.category {
+  padding: 0;
+}
+
+.categoryTitle {
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ifm-font-color-base);
+}
+
+.pageList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pageItem {
+  margin: 0;
+  padding: 0;
+}
+
+.pageLink {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  color: var(--ifm-link-color);
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+  background-color: transparent;
+  border-left: 3px solid transparent;
+}
+
+.pageLink:hover {
+  color: var(--ifm-link-hover-color);
+  background-color: var(--ifm-color-emphasis-100);
+  border-left-color: var(--ifm-color-primary);
+  text-decoration: none;
+  transform: translateX(2px);
+}
+
+.pageLink:active {
+  background-color: var(--ifm-color-emphasis-200);
+}
+
+/* Dark mode support */
+[data-theme='dark'] .relatedPages {
+  background-color: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-emphasis-300);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme='dark'] .pageLink:hover {
+  background-color: var(--ifm-color-emphasis-200);
+}
+
+[data-theme='dark'] .pageLink:active {
+  background-color: var(--ifm-color-emphasis-300);
+}
+
+/* Mobile responsive - stack categories vertically on small screens */
+@media (max-width: 768px) {
+  .relatedPages {
+    padding: 1rem;
+    margin-top: 1.5rem;
+    overflow: hidden;
+  }
+
+  .header {
+    margin-bottom: 1rem;
+  }
+
+  .title {
+    font-size: 1.125rem;
+  }
+
+  .categoryTitle {
+    font-size: 0.9375rem;
+  }
+
+  .categories {
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+
+  .pageList {
+    gap: 0.625rem;
+  }
+
+  .pageLink {
+    padding: 0.75rem 0.875rem;
+    font-size: 0.9375rem;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+/* Tablet and larger - show categories in a grid */
+@media (min-width: 769px) {
+  .categories {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+
+/* Print styles - hide related pages when printing */
+@media print {
+  .relatedPages {
+    display: none;
+  }
+}
