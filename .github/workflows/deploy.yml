@@ -60,12 +60,13 @@ jobs:
       - name: Link Checker
         uses: lycheeverse/lychee-action@v1
         with:
-          args: --verbose --no-progress --accept 200,403,429 'build/**/*.html'
+          args: --config .github/lychee.toml --verbose --no-progress 'build/**/*.html'
+          fail: true
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
   deploy:
-    needs: build
+    needs: [build, check-links]
     runs-on: ubuntu-latest
     environment:
       name: github-pages

@@ -5,7 +5,7 @@
 max_concurrency = 10
 
 # Accept these HTTP status codes as valid
-accept = [200, 204, 206, 301, 302, 307, 308, 429]
+accept = [200, 204, 206, 301, 302, 307, 308, 403, 429]
 
 # Timeout for each request (in seconds)
 timeout = 20
