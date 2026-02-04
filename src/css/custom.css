@@ -158,6 +158,42 @@ th, td {
   --ifm-alert-text-color: inherit;
 }
 
+.admonition-auvik-docs {
+  --ifm-alert-background-color: rgba(59, 130, 246, 0.1);
+  --ifm-alert-border-color: #3b82f6;
+  --ifm-alert-text-color: inherit;
+}
+
+.admonition-third-party {
+  --ifm-alert-background-color: rgba(139, 92, 246, 0.1);
+  --ifm-alert-border-color: #8b5cf6;
+  --ifm-alert-text-color: inherit;
+}
+
+.admonition-auvik-update {
+  --ifm-alert-background-color: rgba(249, 115, 22, 0.1);
+  --ifm-alert-border-color: #f97316;
+  --ifm-alert-text-color: inherit;
+}
+
+.admonition-pro-tip {
+  --ifm-alert-background-color: rgba(34, 197, 94, 0.1);
+  --ifm-alert-border-color: #22c55e;
+  --ifm-alert-text-color: inherit;
+}
+
+.admonition-security {
+  --ifm-alert-background-color: rgba(239, 68, 68, 0.1);
+  --ifm-alert-border-color: #ef4444;
+  --ifm-alert-text-color: inherit;
+}
+
+.admonition-version {
+  --ifm-alert-background-color: rgba(100, 116, 139, 0.1);
+  --ifm-alert-border-color: #64748b;
+  --ifm-alert-text-color: inherit;
+}
+
 /* Table row highlighting */
 .row-highlight td {
   background: rgba(59, 130, 246, 0.1) !important;
