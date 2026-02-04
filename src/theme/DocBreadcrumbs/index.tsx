@@ -1,6 +1,11 @@
+/**
+ * Enhanced breadcrumb navigation component
+ * Displays full hierarchical path from root to current page
+ * with improved styling for light and dark modes
+ */
 import React from 'react';
-import {useLocation} from '@docusaurus/router';
-import {useSidebarBreadcrumbs, useHomePageRoute} from '@docusaurus/theme-common/internal';
+import {useSidebarBreadcrumbs} from '@docusaurus/plugin-content-docs/client';
+import {useHomePageRoute} from '@docusaurus/theme-common/internal';
 import Link from '@docusaurus/Link';
 import {translate} from '@docusaurus/Translate';
 import clsx from 'clsx';
@@ -25,7 +30,7 @@ function BreadcrumbsItemLink({
 
   return (
     <Link
-      className={clsx(styles.breadcrumbItem, styles.breadcrumbItemLink)}
+      className={`${styles.breadcrumbItem} ${styles.breadcrumbItemLink}`}
       href={href}
       itemProp="item"
     >
@@ -37,9 +42,11 @@ function BreadcrumbsItemLink({
 function BreadcrumbsItem({
   item,
   active,
+  position,
 }: {
   item: BreadcrumbItem;
   active?: boolean;
+  position: number;
 }): React.ReactElement {
   return (
     <li
@@ -53,13 +60,14 @@ function BreadcrumbsItem({
       <BreadcrumbsItemLink href={!active ? item.href : undefined}>
         {item.label}
       </BreadcrumbsItemLink>
-      <meta itemProp="position" content={String(1)} />
+      <meta itemProp="position" content={String(position)} />
     </li>
   );
 }
 
 function HomeBreadcrumbItem(): React.ReactElement {
-  const homeHref = useHomePageRoute()?.path ?? '/';
+  const homePath = useHomePageRoute()?.path;
+  const homeHref = typeof homePath === 'string' ? homePath : '/';
   return (
     <li
       className={styles.breadcrumbsItem}
@@ -73,7 +81,7 @@ function HomeBreadcrumbItem(): React.ReactElement {
           message: 'Home page',
           description: 'The ARIA label for the home page in the breadcrumbs',
         })}
-        className={clsx(styles.breadcrumbItem, styles.breadcrumbItemLink)}
+        className={`${styles.breadcrumbItem} ${styles.breadcrumbItemLink}`}
         href={homeHref}
         itemProp="item"
       >
@@ -88,7 +96,6 @@ function HomeBreadcrumbItem(): React.ReactElement {
 
 export default function DocBreadcrumbs(): React.ReactElement | null {
   const breadcrumbs = useSidebarBreadcrumbs();
-  const location = useLocation();
 
   if (!breadcrumbs || breadcrumbs.length === 0) {
     return null;
@@ -116,6 +123,7 @@ export default function DocBreadcrumbs(): React.ReactElement | null {
               key={idx}
               item={item}
               active={isLast}
+              position={idx + 1}
             />
           );
         })}
