@@ -157,16 +157,49 @@ Store the golden image:
 
 ## Image Versioning
 
+Golden images follow semantic versioning to track changes and compatibility. See [Version History](./version-history.md) for detailed change logs.
+
+### Version Numbering
+
+Use semantic versioning format: `MAJOR.MINOR.PATCH`
+
+- **MAJOR**: Breaking changes or major OS upgrades
+- **MINOR**: New features or significant updates
+- **PATCH**: Bug fixes and minor updates
+
+### Naming Convention
+
 Name images with version and date:
 
 ```
-auvik-golden-v1.0-2026-02-03.img
-auvik-golden-v1.1-2026-03-15.img
+auvik-golden-v1.0.0-2026-02-03.img
+auvik-golden-v1.1.0-2026-03-15.img
+auvik-golden-v2.0.0-2027-01-10.img
 ```
 
-Document changes between versions:
-- v1.0: Initial release
-- v1.1: Updated to latest Bookworm, new SSH key
+### Version File
+
+Each golden image must include a version file at `/etc/golden-image-version`:
+
+```bash
+# Create version file during image build
+echo "1.0.0" | sudo tee /etc/golden-image-version
+sudo chmod 644 /etc/golden-image-version
+```
+
+This file enables automated version checking on deployed collectors.
+
+### Version Check Script
+
+Add the version check script to enable remote version auditing:
+
+```bash
+# Download and install version-check.sh
+sudo curl -o /usr/local/bin/version-check.sh https://raw.githubusercontent.com/viyu/auvik-collectors/main/scripts/version-check.sh
+sudo chmod +x /usr/local/bin/version-check.sh
+```
+
+The version check script reads `/etc/golden-image-version` and reports the current image version, enabling centralized tracking of all deployed collectors.
 
 ## Maintenance Schedule
 
