@@ -19,6 +19,7 @@ import DocBreadcrumbs from '@theme/DocBreadcrumbs';
 import ContentVisibility from '@theme/ContentVisibility';
 import RelatedPages from '@site/src/components/RelatedPages';
 import PageSuggestions from '@site/src/components/PageSuggestions';
+import DocFeedback from '@site/src/components/DocFeedback';
 import type {Props} from '@theme/DocItem/Layout';
 import styles from './styles.module.css';
 
@@ -59,6 +60,7 @@ export default function DocItemLayout({children}: Props): React.ReactElement {
             <DocItemContent>{children}</DocItemContent>
             <DocItemFooter />
           </article>
+          <DocFeedback githubRepo="viyu-net/viyu_AuvikCollectors" />
           <RelatedPages />
           <PageSuggestions />
           <DocItemPaginator />
