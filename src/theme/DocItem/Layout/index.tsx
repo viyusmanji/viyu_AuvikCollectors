@@ -19,6 +19,7 @@ import DocBreadcrumbs from '@theme/DocBreadcrumbs';
 import ContentVisibility from '@theme/ContentVisibility';
 import RelatedPages from '@site/src/components/RelatedPages';
 import PageSuggestions from '@site/src/components/PageSuggestions';
+import usePageView from '@site/src/components/Analytics/usePageView';
 import type {Props} from '@theme/DocItem/Layout';
 import styles from './styles.module.css';
 
@@ -45,6 +46,9 @@ function useDocTOC() {
 export default function DocItemLayout({children}: Props): React.ReactElement {
   const docTOC = useDocTOC();
   const {metadata} = useDoc();
+
+  // Track page views for analytics
+  usePageView();
 
   return (
     <div className="row">
