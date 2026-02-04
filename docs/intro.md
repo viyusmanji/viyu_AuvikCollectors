@@ -26,6 +26,7 @@ This is a public technician reference document. It covers hardware selection, OS
 | Parts list and costs | [Hardware BOM](/docs/hardware/bill-of-materials) |
 | Install Auvik on Pi | [Auvik Installation](/docs/software/auvik-installation) |
 | Field deployment | [On-Site Checklist](/docs/deployment/on-site) |
+| MSP/multi-site deployment | [Multi-Site Overview](/docs/multi-site/overview) |
 | Something not working | [Troubleshooting](/docs/troubleshooting/common-issues) |
 | Print checklists | [Complete Deployment Checklist](/docs/checklists/complete-deployment) |
 
