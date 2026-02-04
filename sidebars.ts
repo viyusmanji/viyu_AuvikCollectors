@@ -88,6 +88,7 @@ const sidebars: SidebarsConfig = {
       label: 'Troubleshooting',
       items: [
         'troubleshooting/common-issues',
+        'troubleshooting/network-connectivity',
         'troubleshooting/pi-not-powering',
         'troubleshooting/collector-offline',
         'troubleshooting/sd-card-failure',
