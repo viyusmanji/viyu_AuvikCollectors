@@ -19,6 +19,35 @@ After cloning the golden image, customize these settings for each client deploym
 
 ## Step-by-Step Customization
 
+### 0. Verify Golden Image Version
+
+Before customizing, verify you're starting with the correct golden image version:
+
+```bash
+# Run version check script
+~/version-check.sh
+```
+
+This displays:
+- Current golden image version
+- Last update date
+- Installed components and versions
+- System information
+
+**Important:** Record the golden image version in your deployment documentation. This helps troubleshoot issues and ensures consistency across deployments.
+
+Example output:
+```
+Golden Image Version Check
+==========================
+Golden Image: v2024-01-15
+Last Updated: 2024-01-15
+Base OS: Raspberry Pi OS (Bookworm)
+...
+```
+
+If the version doesn't match your expected golden image, stop and verify you're using the correct SD card or image source.
+
 ### 1. Set Hostname
 
 ```bash
@@ -199,6 +228,7 @@ chmod +x ~/customize-collector.sh
 
 Before packaging for field deployment:
 
+- [ ] Golden image version verified and recorded
 - [ ] Hostname changed from `auvik-TEMPLATE`
 - [ ] Static IP configured correctly
 - [ ] Can ping gateway
