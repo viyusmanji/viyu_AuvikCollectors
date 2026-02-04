@@ -60,6 +60,18 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'Multi-Site Deployment',
+      items: [
+        'multi-site/overview',
+        'multi-site/bulk-preparation',
+        'multi-site/naming-conventions',
+        'multi-site/fleet-management',
+        'multi-site/batch-customization',
+        'multi-site/alert-configuration',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Deployment',
       collapsed: false,
       items: [
