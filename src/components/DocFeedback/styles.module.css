@@ -57,11 +57,42 @@
 }
 
 .thankYouMessage {
-  margin: 0;
+  margin: 0 0 1rem 0;
   font-size: 1rem;
   color: var(--ifm-color-success);
   font-weight: 500;
   text-align: center;
+}
+
+.reportIssueButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--ifm-color-emphasis-400);
+  border-radius: var(--ifm-button-border-radius);
+  background-color: var(--ifm-button-background-color);
+  color: var(--ifm-button-color);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.reportIssueButton:hover {
+  background-color: var(--ifm-color-emphasis-100);
+  border-color: var(--ifm-color-primary);
+}
+
+.reportIssueButton:focus {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+
+.reportIssueButton:active {
+  transform: translateY(1px);
 }
 
 /* Dark mode adjustments */
@@ -74,5 +105,13 @@ html[data-theme='dark'] .feedbackButton {
 }
 
 html[data-theme='dark'] .feedbackButton:hover {
+  background-color: var(--ifm-color-emphasis-200);
+}
+
+html[data-theme='dark'] .reportIssueButton {
+  border-color: var(--ifm-color-emphasis-300);
+}
+
+html[data-theme='dark'] .reportIssueButton:hover {
   background-color: var(--ifm-color-emphasis-200);
 }
