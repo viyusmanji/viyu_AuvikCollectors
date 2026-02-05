@@ -38,8 +38,35 @@ jobs:
         with:
           path: build
 
-  deploy:
+  check-links:
     needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Link Checker
+        uses: lycheeverse/lychee-action@v1
+        with:
+          args: --config .github/lychee.toml --verbose --no-progress 'build/**/*.html'
+          fail: true
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+  deploy:
+    needs: [build, check-links]
     runs-on: ubuntu-latest
     environment:
       name: github-pages
