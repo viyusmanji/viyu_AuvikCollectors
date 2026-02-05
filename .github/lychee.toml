@@ -40,9 +40,9 @@ exclude = [
     "http://example.org",
     "https://example.org",
 
-    # Common placeholders
-    "http://[",
-    "https://[",
+    # Common placeholders (brackets escaped for regex)
+    "http://\\[",
+    "https://\\[",
 
     # Require authentication or have rate limiting
     "https://linkedin.com",
