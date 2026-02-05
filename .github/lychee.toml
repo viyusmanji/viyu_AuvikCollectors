@@ -20,8 +20,9 @@ retry_wait_time = 2
 # User agent string
 user_agent = "Mozilla/5.0 (compatible; LinkChecker/1.0)"
 
-# Check links in these formats
-include = ["*.md", "*.mdx", "*.html"]
+# Note: File patterns are specified via CLI args in the workflow
+# The include option below is for URL regex filtering, not file patterns
+# Removed invalid glob patterns that were causing regex parse errors
 
 # Exclude specific URLs or patterns
 # Add patterns for:
