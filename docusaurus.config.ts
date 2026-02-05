@@ -93,6 +93,11 @@ const config: Config = {
           position: 'left',
         },
         {
+          to: '/analytics',
+          label: 'Analytics',
+          position: 'left',
+        },
+        {
           href: 'https://github.com/viyu-net/viyu_AuvikCollectors',
           label: 'GitHub',
           position: 'right',
