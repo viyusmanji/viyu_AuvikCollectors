@@ -25,8 +25,8 @@
   padding: 0.5rem 1rem;
   border: 1px solid var(--ifm-color-emphasis-400);
   border-radius: var(--ifm-button-border-radius);
-  background-color: var(--ifm-button-background-color);
-  color: var(--ifm-button-color);
+  background-color: var(--ifm-background-surface-color);
+  color: var(--ifm-color-content);
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
@@ -72,8 +72,8 @@
   padding: 0.5rem 1rem;
   border: 1px solid var(--ifm-color-emphasis-400);
   border-radius: var(--ifm-button-border-radius);
-  background-color: var(--ifm-button-background-color);
-  color: var(--ifm-button-color);
+  background-color: var(--ifm-background-surface-color);
+  color: var(--ifm-color-content);
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
@@ -103,8 +103,8 @@
   padding: 0.5rem 1rem;
   border: 1px solid var(--ifm-color-emphasis-400);
   border-radius: var(--ifm-button-border-radius);
-  background-color: var(--ifm-button-background-color);
-  color: var(--ifm-button-color);
+  background-color: var(--ifm-background-surface-color);
+  color: var(--ifm-color-content);
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
