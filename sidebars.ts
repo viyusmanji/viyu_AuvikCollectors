@@ -57,7 +57,6 @@ const sidebars: SidebarsConfig = {
         'golden-image/image-contents',
         'golden-image/per-client-customization',
         'golden-image/cloning-process',
-        'golden-image/update-procedures',
         'golden-image/version-history',
       ],
     },
@@ -88,9 +87,11 @@ const sidebars: SidebarsConfig = {
       label: 'Troubleshooting',
       items: [
         'troubleshooting/common-issues',
+        'troubleshooting/network-connectivity',
         'troubleshooting/pi-not-powering',
         'troubleshooting/collector-offline',
         'troubleshooting/sd-card-failure',
+        'troubleshooting/performance-issues',
       ],
     },
     {
@@ -100,6 +101,13 @@ const sidebars: SidebarsConfig = {
         'reference/cost-analysis',
         'reference/auvik-documentation',
         'reference/glossary',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Documentation Strategy',
+      items: [
+        'documentation-strategy/external-references-guide',
       ],
     },
     {
